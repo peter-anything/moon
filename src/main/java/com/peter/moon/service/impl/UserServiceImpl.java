@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-//@Transactional
+
 public class UserServiceImpl implements UserService {
     @Autowired
     UserMapper userMapper;
@@ -20,10 +20,20 @@ public class UserServiceImpl implements UserService {
     PasswordEncoder passwordEncoder;
 
     @Override
+    @Transactional
     public void bulkCreateUsers(List<User> users) {
         for (User user: users) {
             user.setPassword(passwordEncoder.encode(user.getPassword() == null ? "123456" : user.getPassword()));
         }
-        userMapper.bulkCreateUsers(users);
+        userMapper.hashCode();
+    }
+
+
+    @Override
+    public void doNothing(List<User> users) {
+        for (User user: users) {
+            user.setPassword(passwordEncoder.encode(user.getPassword() == null ? "123456" : user.getPassword()));
+        }
+        System.out.println(userMapper.hashCode());
     }
 }

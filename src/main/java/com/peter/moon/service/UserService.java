@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface UserService {
     void bulkCreateUsers(List<User> users);
+    void doNothing(List<User> users);
 }

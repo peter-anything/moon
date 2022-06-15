@@ -43,7 +43,7 @@ public class UserController {
         u1.setEmail("wanglong1@datagrand.com");
         u1.setUsername("wanglong1");
         needCreateUsers.add(u1);
-        userService.bulkCreateUsers(needCreateUsers);
+        userService.doNothing(needCreateUsers);
         List<User> users = userMapper.selectList(null);
         return new ResponseBean<List<User>>("", "", users);
     }
