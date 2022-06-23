@@ -1,16 +1,22 @@
 package com.peter.moon.controller;
 
-import com.peter.moon.common.EmptyBean;
 import com.peter.moon.common.ResponseBean;
+import com.peter.moon.d2r.flows.*;
 import com.peter.moon.entity.User;
+import com.peter.moon.factory.SqlConnectionFactory;
 import com.peter.moon.mapper.UserMapper;
 import com.peter.moon.service.UserService;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,9 +29,30 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    private static final Logger logger = LoggerFactory.getLogger(SqlConnectionFactory.class);
+
     @RequestMapping(value = "/detail/{userId}", method = RequestMethod.GET)
-    public ResponseBean<User> detail(@PathVariable Integer userId) {
-        User user = userMapper.selectById(userId);
+    public ResponseBean<User> detail(@PathVariable Integer userId) throws SQLException, IOException {
+        User user = userService.getUserMapperByApplicationContext().selectById(userId);
+        DBFlow dbFlow = new DBFlow();
+        ArrayList<Integer> ans = new ArrayList<>();
+        ans.add(1);
+        int len = 0;
+        for(Integer num: ans) {
+            System.out.println(num);
+        }
+
+        DBRow rowList = dbFlow.process();
+
+        CSVFlow csvFlow = new CSVFlow();
+        CSVRow csvRowList = csvFlow.process();
+
+        for (RowData rowData: csvRowList) {
+            String[] result = (String[]) rowData.getData();
+            len++;
+            logger.info(StringUtils.join(result,","));
+        }
+        logger.error(String.valueOf(len));
         return new ResponseBean<User>("", "", user);
     }
 
