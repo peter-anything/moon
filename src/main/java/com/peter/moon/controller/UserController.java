@@ -2,6 +2,7 @@ package com.peter.moon.controller;
 
 import com.peter.moon.common.EmptyBean;
 import com.peter.moon.common.ResponseBean;
+import com.peter.moon.d2r.flows.DBFlow;
 import com.peter.moon.entity.User;
 import com.peter.moon.mapper.UserMapper;
 import com.peter.moon.service.UserService;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,8 +26,10 @@ public class UserController {
     UserService userService;
 
     @RequestMapping(value = "/detail/{userId}", method = RequestMethod.GET)
-    public ResponseBean<User> detail(@PathVariable Integer userId) {
-        User user = userMapper.selectById(userId);
+    public ResponseBean<User> detail(@PathVariable Integer userId) throws SQLException {
+        User user = userService.getUserMapperByApplicationContext().selectById(userId);
+        DBFlow dbFlow = new DBFlow();
+        dbFlow.process();
         return new ResponseBean<User>("", "", user);
     }
 
