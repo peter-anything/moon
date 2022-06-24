@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,24 +30,20 @@ public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(SqlConnectionFactory.class);
 
     @RequestMapping(value = "/detail/{userId}", method = RequestMethod.GET)
-    public ResponseBean<User> detail(@PathVariable Integer userId) throws SQLException, IOException {
+    public ResponseBean<User> detail(@PathVariable Integer userId) throws Exception {
         User user = userService.getUserMapperByApplicationContext().selectById(userId);
-        DBFlow dbFlow = new DBFlow();
-        ArrayList<Integer> ans = new ArrayList<>();
-        ans.add(1);
+        DBProcessor dbFlow = new DBProcessor();
+//        dbFlow.next = new ThreeTupleFlow();
+
         int len = 0;
-        for(Integer num: ans) {
-            System.out.println(num);
-        }
+//        DBRow rowList = dbFlow.process();
+//        CSVProcessor csvFlow = new CSVProcessor();
+//        CSVRow csvRowList = csvFlow.process();
 
-        DBRow rowList = dbFlow.process();
-
-        CSVFlow csvFlow = new CSVFlow();
-        CSVRow csvRowList = csvFlow.process();
-
-        for (RowData rowData: csvRowList) {
+        for (RowData rowData: dbFlow.process()) {
             String[] result = (String[]) rowData.getData();
             len++;
+
             logger.info(StringUtils.join(result,","));
         }
         logger.error(String.valueOf(len));

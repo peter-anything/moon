@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Iterator;
 
-public class CSVRow implements Iterable<RowData>, Iterator<RowData> {
+public class CSVRow implements Row {
     private static final Logger logger = LoggerFactory.getLogger(CSVRow.class);
 
     private CSVReader csvReader;

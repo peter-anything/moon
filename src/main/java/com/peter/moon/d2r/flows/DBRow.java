@@ -5,7 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Iterator;
 
-public class DBRow implements Iterable<RowData>, Iterator<RowData> {
+public class DBRow implements Row {
     private ResultSet resultSet;
     private int columnLen = 0;
 

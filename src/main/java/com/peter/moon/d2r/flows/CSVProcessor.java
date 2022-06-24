@@ -9,15 +9,14 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.Iterator;
 
-public class CSVFlow implements Flow, Iterable<String[]> {
-    private static final Logger logger = LoggerFactory.getLogger(CSVFlow.class);
+public class CSVProcessor extends D2RFLow implements Iterable<String[]> {
+    private static final Logger logger = LoggerFactory.getLogger(CSVProcessor.class);
 
     @Override
-    public CSVRow process() throws IOException {
+    public Row process() throws IOException {
         String fileName = "C:\\Users\\peter\\Desktop\\all2.csv";
 
         try {
